@@ -2,28 +2,13 @@
 # This file is managed by bootstack-charms-spec and should not be modified
 # within individual charm repos. https://launchpad.net/bootstack-charms-spec
 
-name: Release to Charmhub
+name: Release to Edge
 
 on:
   push:
     branches: [ master, main ]
 
 jobs:
-  build:
-    name: Build charm
-    uses: canonical/data-platform-workflows/.github/workflows/build_charm_without_cache.yaml@v2
-
   release:
-    name: Release charm
-    needs:
-      - build
-    uses: canonical/data-platform-workflows/.github/workflows/release_charm.yaml@v2
-    with:
-      channel: latest/edge
-      artifact-name: ${{ needs.build.outputs.artifact-name }}
-      create-github-release: false # remove this line if you want to create github release
-    secrets:
-      # See README.md on bootstack-charms-spec for more information on how to generate the appropriate credentials
-      charmhub-token: ${{ secrets.CHARMHUB_TOKEN }}
-    permissions:
-      contents: write  # Needed to create GitHub release
+    uses: canonical/bootstack-actions/.github/workflows/charm-release.yaml@main
+    secrets: inherit
