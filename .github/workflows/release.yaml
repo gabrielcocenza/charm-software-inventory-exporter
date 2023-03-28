@@ -10,5 +10,5 @@ on:
 
 jobs:
   release:
-    uses: gabrielcocenza/bootstack-actions/.github/workflows/charm-release.yaml@charm-release
+    uses: gabrielcocenza/bootstack-actions/.github/workflows/charm-release.yaml@charm-release-b
     secrets: inherit
