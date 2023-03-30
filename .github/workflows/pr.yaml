@@ -5,8 +5,6 @@
 name: PR workflow running lint checkers, unit and functional tests
 
 on:
-  push:
-    branches: [ master, main ]
   pull_request:
     types: [ opened, synchronize, reopened ]
     branches: [ master, main ]
@@ -21,3 +19,4 @@ jobs:
       python-version-unit: "['3.8', '3.10']"
       python-version-func: "3.10"
       tox-version: "<4"
+      commands: "['make functional']"
