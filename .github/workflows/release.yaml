@@ -18,3 +18,4 @@ jobs:
       tox-version: "<4"
       channel: "latest/edge"
       upload-image: false
+      commands: "['make functional']"
