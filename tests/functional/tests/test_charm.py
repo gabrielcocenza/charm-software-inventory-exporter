@@ -15,6 +15,9 @@ from zaza.utilities.juju import get_application_ip
 
 logger = logging.getLogger(__name__)
 
+DPKG_RESPONSE_HEADER_COUNT = 5  # dpkg has 5 lines of header
+SNAP_RESPONSE_HEADER_COUNT = 1  # snap has 1 line of header
+
 
 class SoftwareInventoryExporterTests(unittest.TestCase):
     """Basic functional tests for software-inventory-exporter charm."""
@@ -27,7 +30,6 @@ class SoftwareInventoryExporterTests(unittest.TestCase):
         self.session.mount(
             "http://", HTTPAdapter(max_retries=Retry(connect=3, backoff_factor=0.5))
         )
-        self.endpoints = ["hostname", "kernel", "dpkg", "snap"]
         self.endpoint_cmd = {
             "hostname": "hostname",
             "kernel": "uname -r",
@@ -57,12 +59,10 @@ class SoftwareInventoryExporterTests(unittest.TestCase):
                 self.assertEqual(content[endpoint], response_ubuntu)
             elif endpoint == "dpkg":
                 content = response_exporter.json()
-                # response has 5 lines of header
-                self.assertEqual(len(content), int(response_ubuntu) - 5)
+                self.assertEqual(len(content), int(response_ubuntu) - DPKG_RESPONSE_HEADER_COUNT)
             elif endpoint == "snap":
                 content = response_exporter.json()
-                # response has 1 line of header
-                self.assertEqual(len(content), int(response_ubuntu) - 1)
+                self.assertEqual(len(content), int(response_ubuntu) - SNAP_RESPONSE_HEADER_COUNT)
 
     def test_exporter(self) -> None:
         """Test that exporter works after port reconfiguration."""
